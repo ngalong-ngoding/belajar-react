@@ -12,7 +12,7 @@ const Layout = () => {
         {/* Topbar */}
         <Topbar />
         {/* Main content */}
-        <div className="p-4">
+        <div className="p-6">
           <Outlet />
         </div>
       </div>
