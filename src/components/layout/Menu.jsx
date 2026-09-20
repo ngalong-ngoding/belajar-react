@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 // import cn from "../../../utils/cn";
-import cn from "./../../utils/cn";
+import cn from "@/utils/cn";
 
 const Menu = ({ title = "", icon = null, to = "/" }) => {
   return (

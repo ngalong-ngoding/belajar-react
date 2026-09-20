@@ -1,6 +1,6 @@
 import { ChevronDown, Search } from "lucide-react";
 import { useLocation } from "react-router";
-import Avatar from "../Avatar";
+import Avatar from "@/components/Avatar";
 
 const Topbar = () => {
   const location = useLocation();
