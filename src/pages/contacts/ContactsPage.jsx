@@ -97,7 +97,11 @@ const ContactsPage = () => {
                 );
               })
             ) : (
-              <tr>Data sedang tidak ada</tr>
+              <tr className="bg-white">
+                <td colSpan={5} className="p-4 text-center text-[#7A7A7A]">
+                  Data sedang tidak ada
+                </td>
+              </tr>
             )}
           </tbody>
         </table>

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import BoardPage from "./pages/board/BoardPage";
-import Layout from "./components/layout";
+import Layout from "./layouts/main/MainLayout";
 import ContactsPage from "./pages/contacts/ContactsPage";
 
 const App = () => {
