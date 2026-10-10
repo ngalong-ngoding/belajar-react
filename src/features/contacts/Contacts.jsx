@@ -4,17 +4,41 @@ import Avatar from "@/components/Avatar";
 import Badge from "@/components/Badge";
 import { useState } from "react";
 import NewContact from "./modal/NewContact";
+import DeleteContact from "./modal/DeleteContact";
 
 const Contacts = () => {
   const [contactList, setContactList] = useState([]);
   const [openedModal, setOpenedModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [selectedContactId, setSelectedContactId] = useState(null);
 
   const closeModal = () => setOpenedModal(false);
+  const closeModalDelete = () => setDeleteModal(false);
 
   const onAddContact = (contact) => {
     setContactList((prev) => {
       return [...prev, contact];
     });
+  };
+
+  const onClickDelete = (id) => {
+    setSelectedContactId(id);
+    setDeleteModal(true);
+  };
+
+  const onDeleteContact = () => {
+    setContactList((prev) => {
+      const hasil = prev.filter((contact) => {
+        if (contact.id !== selectedContactId) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      return hasil;
+    });
+    setDeleteModal(false);
   };
 
   return (
@@ -74,10 +98,13 @@ const Contacts = () => {
                     <td className="p-4">{phone}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <button className="border border-[#E0E0E0] p-2 rounded-full">
+                        <button className="border border-[#E0E0E0] p-2 rounded-full cursor-pointer">
                           <Pencil className="text-[#0066CC]" size={16} />
                         </button>
-                        <button className="border border-[#E0E0E0] p-2 rounded-full">
+                        <button
+                          onClick={() => onClickDelete(id)}
+                          className="border border-[#E0E0E0] p-2 rounded-full cursor-pointer"
+                        >
                           <Trash size={16} />
                         </button>
                       </div>
@@ -101,6 +128,11 @@ const Contacts = () => {
         opened={openedModal}
         onClose={closeModal}
         onAdd={onAddContact}
+      />
+      <DeleteContact
+        opened={deleteModal}
+        onClose={closeModalDelete}
+        onDelete={onDeleteContact}
       />
     </div>
   );
