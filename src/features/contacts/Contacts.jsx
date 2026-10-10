@@ -12,7 +12,14 @@ const Contacts = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedContactId, setSelectedContactId] = useState(null);
 
-  const closeModal = () => setOpenedModal(false);
+  const editingContact = contactList.find(
+    (contact) => contact.id === selectedContactId,
+  );
+
+  const closeModal = () => {
+    setOpenedModal(false);
+    setSelectedContactId(null);
+  };
   const closeModalDelete = () => setDeleteModal(false);
 
   const onAddContact = (contact) => {
@@ -21,9 +28,34 @@ const Contacts = () => {
     });
   };
 
+  const onEditContact = (editedContact) => {
+    // setContactList((prev) =>
+    //   prev.map((contact) =>
+    //     contact.id === selectedContactId ? editedContact : contact,
+    //   ),
+    // );
+
+    setContactList((prev) => {
+      const result = prev.map((contact) => {
+        if (contact.id === selectedContactId) {
+          return editedContact;
+        } else {
+          return contact;
+        }
+      });
+
+      return result;
+    });
+  };
+
   const onClickDelete = (id) => {
     setSelectedContactId(id);
     setDeleteModal(true);
+  };
+
+  const onClickEdit = (id) => {
+    setSelectedContactId(id);
+    setOpenedModal(true);
   };
 
   const onDeleteContact = () => {
@@ -98,7 +130,10 @@ const Contacts = () => {
                     <td className="p-4">{phone}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <button className="border border-[#E0E0E0] p-2 rounded-full cursor-pointer">
+                        <button
+                          className="border border-[#E0E0E0] p-2 rounded-full cursor-pointer"
+                          onClick={() => onClickEdit(id)}
+                        >
                           <Pencil className="text-[#0066CC]" size={16} />
                         </button>
                         <button
@@ -124,11 +159,15 @@ const Contacts = () => {
       </div>
 
       {/* Modal */}
-      <NewContact
-        opened={openedModal}
-        onClose={closeModal}
-        onAdd={onAddContact}
-      />
+      {openedModal && (
+        <NewContact
+          opened={openedModal}
+          onClose={closeModal}
+          onAdd={onAddContact}
+          onEdit={onEditContact}
+          defaultValue={editingContact}
+        />
+      )}
       <DeleteContact
         opened={deleteModal}
         onClose={closeModalDelete}

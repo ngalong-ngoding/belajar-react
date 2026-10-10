@@ -2,20 +2,26 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { useState } from "react";
 
+const defaultForm = {
+  id: "",
+  name: "",
+  email: "",
+  company: "",
+  role: "recruiter",
+  phone: "",
+  notes: "",
+};
+
 const NewContact = ({
   opened = true,
   onClose = () => {},
   onAdd = () => {},
+  onEdit = () => {},
+  defaultValue = null,
 }) => {
-  const [contactForm, setContactForm] = useState({
-    id: "",
-    name: "",
-    email: "",
-    company: "",
-    role: "recruiter",
-    phone: "",
-    notes: "",
-  });
+  const [contactForm, setContactForm] = useState(defaultValue ?? defaultForm);
+
+  const isEdit = Boolean(defaultValue);
 
   // const onChangeName = (event) => {
   //   const value = event.target.placeholder;
@@ -40,14 +46,20 @@ const NewContact = ({
   };
 
   const onSubmit = () => {
-    onAdd({ ...contactForm, id: Date.now() });
+    if (isEdit) {
+      onEdit(contactForm);
+    } else {
+      onAdd({ ...contactForm, id: Date.now() });
+    }
     onClose();
   };
 
   return (
     <Modal opened={opened}>
       <div className="border-b border-[#E0E0E0] p-5">
-        <h2 className="text-xl font-bold mb-0.5">New contact</h2>
+        <h2 className="text-xl font-bold mb-0.5">
+          {isEdit ? "Edit" : "New"} contact
+        </h2>
         <p className="text-[#7A7A7A] text-sm">
           Who you talk to, and when you last did.
         </p>
@@ -62,6 +74,7 @@ const NewContact = ({
             placeholder="Enter full name"
             className="border border-[#E0E0E0] focus:border-[#0066CC] outline-none rounded-full py-2 px-3"
             onChange={onChangeForm}
+            value={contactForm.name}
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -73,6 +86,7 @@ const NewContact = ({
             placeholder="Enter company"
             className="border border-[#E0E0E0] focus:border-[#0066CC] outline-none rounded-full py-2 px-3"
             onChange={onChangeForm}
+            value={contactForm.company}
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -81,6 +95,7 @@ const NewContact = ({
             name="role"
             className="border border-[#E0E0E0] focus:border-[#0066CC] outline-none rounded-full py-2 px-3"
             onChange={onChangeForm}
+            value={contactForm.role}
           >
             <option value="recruiter">Recruiter</option>
             <option value="hiringManager">Hiring manager</option>
@@ -97,6 +112,7 @@ const NewContact = ({
             placeholder="Enter email"
             className="border border-[#E0E0E0] focus:border-[#0066CC] outline-none rounded-full py-2 px-3"
             onChange={onChangeForm}
+            value={contactForm.email}
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -108,6 +124,7 @@ const NewContact = ({
             placeholder="Enter phone number"
             className="border border-[#E0E0E0] focus:border-[#0066CC] outline-none rounded-full py-2 px-3"
             onChange={onChangeForm}
+            value={contactForm.phone}
           />
         </div>
         <div className="flex flex-col gap-2 col-span-2">
@@ -118,6 +135,7 @@ const NewContact = ({
             placeholder="Enter notes"
             className="border border-[#E0E0E0] focus:border-[#0066CC] outline-none rounded-xl resize-y py-2 px-3"
             onChange={onChangeForm}
+            value={contactForm.notes}
           />
         </div>
       </div>
@@ -126,7 +144,7 @@ const NewContact = ({
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={onSubmit}>Add contact</Button>
+        <Button onClick={onSubmit}>{isEdit ? "Save" : "Add"}</Button>
       </div>
     </Modal>
   );
